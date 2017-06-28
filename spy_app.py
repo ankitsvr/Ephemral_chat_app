@@ -1,25 +1,24 @@
 #import all necessary library to support various predefine fuction
 from spy_details import *
 from steganography.steganography import *
-from datetime import datetime
+from termcolor import *
 
-
+#function for app initiation
 def start_chat(spy):
-
 
     spy.name = spy.salutation + " " + spy.name
 
-
+#age conditions
     if spy.age > 12 and spy.age < 50:
 
 
         print "Authentication complete. \n\n\t\t\t\tWelcome " + spy.name + "..... Proud to have you onboard"
 
         show_menu = True
-
+#this segment keep showing menu untill we close the app or choose the option for terminate the app
         while show_menu:
             menu_choices = "\n\nWhat do you want to do? \n 1. Add a status update \n 2. Add a friend\n 3. select a friend \n 4. Send a secret message \n 5. Read a secret message \n 6. Read Chats from a user \n 7. Close Application \n"
-            menu_choice = raw_input(menu_choices)
+            menu_choice = raw_input(menu_choices+">>:")
             try:
 
                 if len(menu_choice) > 0:
@@ -61,10 +60,10 @@ def add_status():
         print 'You don\'t have any status message currently \n'
 
 
-    status_choice= raw_input("Do you want to select from the older status (y/n)? ")
+    status_choice= raw_input("Do you want to select from the older status (y/n)?>> ")
 
     if status_choice.upper() == "N":
-        new_status_message = raw_input("What status message do you want to set? ")
+        new_status_message = raw_input("What status message do you want to set?>> ")
 
 
         if len(new_status_message) > 0:
@@ -79,16 +78,26 @@ def add_status():
             print '%d. %s' % (item_position, message)
             item_position = item_position + 1
 
-        message_selection = int(raw_input("\nChoose from the above messages "))
+        message_selection = int(raw_input("\nChoose from the above messages:>> "))
 
 
         if len(status_messages) >= message_selection:
             updated_status_message = status_messages[message_selection - 1]
 
+            if updated_status_message:
+                print 'your updated status is:--> "%s" '%(updated_status_message)
+            else:
+                print "you dont have curent status message"
+            return updated_status_message
+
+
     else:
         print 'The option you chose is not valid! Press either y or n.'
 
-
+    if updated_status_message:
+        print "your updated status is ", updated_status_message
+    else:
+        print "you dont have curent status message"
     return updated_status_message
 
 
@@ -140,7 +149,7 @@ def select_a_friend():
                                                    friend.rating)
         item_number = item_number + 1
 
-    friend_choice = raw_input("Choose from your friends")
+    friend_choice = raw_input("\n>>>>>Select friend: ")
 
     friend_choice_position = int(friend_choice) - 1
 
@@ -187,7 +196,7 @@ def read_chats():
     friend_select=select_a_friend()
     for chat in friends[friend_select].chats:
         if chat.sent_by_me:
-            print "[%s] %s: %s" %(chat.time.strftime("%d %B %Y"), 'you said-',chat.message)
+            print "\nYour chat history\n\nDate"+colored(chat.time.strftime("%d %B %Y"),'blue'),"\nName:>> "+colored(friends[friend_select].name,'red')+ '\nyou said-',colored(chat.message,'green')
 
         else:
             print '[%s] %s said: %s' % (chat.time.strftime("%d %B %Y"), friends[friend_select].name, chat.message)
