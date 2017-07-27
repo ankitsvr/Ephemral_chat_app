@@ -2,6 +2,8 @@
 from spy_details import *
 from steganography.steganography import *
 from termcolor import *
+import time
+
 
 #function for app initiation
 def start_chat(spy):
@@ -17,7 +19,7 @@ def start_chat(spy):
         show_menu = True
 #this segment keep showing menu untill we close the app or choose the option for terminate the app
         while show_menu:
-            menu_choices = "\n\nWhat do you want to do? \n 1. Add a status update \n 2. Add a friend\n 3. select a friend \n 4. Send a secret message \n 5. Read a secret message \n 6. Read Chats from a user \n 7. Close Application \n"
+            menu_choices = "\n\nWhat do you want to do?\n 1. Add a status update \n 2. Add a friend\n 3. select a friend \n 4. Send a secret message \n 5. Read a secret message \n 6. Read Chats from a user \n 7. Close Application \n"
             menu_choice = raw_input(menu_choices+">>:")
             try:
 
@@ -162,12 +164,17 @@ def send_message():
     original_image = raw_input("What is the name of the image:>>?")
     output_path =raw_input("name of stegno file is :>> ")
     text = raw_input("What do you want to say?>> ")
-    Steganography.encode(original_image, output_path, text)
+    if len(text) > 0:
+        Steganography.encode(original_image, output_path, text)
 
-    new_chat = messages(text, True)
+        new_chat = messages(text, True)
 
-    friends[friend_choice].chats.append(new_chat)
-    print "\t*********Your secret message image is ready!***************"
+        friends[friend_choice].chats.append(new_chat)
+        print "\t*********Your secret message image is ready!***************"
+
+    else:
+        print "***************enter some string or words\n****you cannot send null message"
+
 
 
 #read secret message from a friend
